@@ -3,7 +3,7 @@ import os
 import collections
 
 # directory is the path to a folder of peer evaluation txt files
-directory = '/Users/annabelleshih/Desktop/peerevaluationstxtfiles'
+directory = '/Users/annabelleshih/Desktop/CS498PeerEvaluations/peerevaluationstxtfiles'
 # key - netid, value - object w/ team #, num teammates, own score, averaged score from others
 students = {}
 # number of actual people per team - 8 teams total for SP19 CS 498 MID class
@@ -20,7 +20,7 @@ class grades:
 
 
 # populate students dict with netid as key and new grades object (default: team #, 0, 0, {})
-with open("/Users/annabelleshih/Desktop/peerevaluationemailsandcode/CS498_team_assignments.csv") as csv_file:
+with open("/Users/annabelleshih/Desktop/CS498PeerEvaluations/CS498_team_assignments.csv") as csv_file:
     csv_reader = csv.reader(csv_file, delimiter=',')
     for row in csv_reader:
         if row:
@@ -67,13 +67,13 @@ for filename in os.listdir(directory):
                         foundOwner = True
                         owner = curr_line
                         curr_student = curr_line
-                    elif foundOwner is False and curr_line not in students:
-                        # should only reach here if you can't find a legit netid in the first iteration
-                        print("ERROR: " + curr_line + " is not in students (original csv")
                     elif foundOwner is True and curr_line in students:
                         # have found owner, on next iteration must get scores
                         curr_student = curr_line
                         findScore = True
+                else:
+                    # file isn't the wanted peer evaluation file
+                    break
         continue
     else:
         # file isn't a txt file, whatever
@@ -81,9 +81,8 @@ for filename in os.listdir(directory):
 
 
 def formattingForCompass(ownScore, teamAvg, teamnum):
-    formattedStr = "Team members’ perception of your contribution for Assignment 1: {:0.1f}% (averaged) \n".format(teamAvg) \
+    formattedStr = "Team members' perception of your contribution for Assignment 1: {:0.1f}% (averaged) \n".format(teamAvg) \
                    + "Your perception of your own contribution for Assignment 1: {}%".format(ownScore)
-
     if ownScore < teamAvg:
         formattedStr += "\nYou might be under-valuing the contribution that you are making to the team."
     elif teamAvg < ownScore:
