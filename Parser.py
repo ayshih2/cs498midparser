@@ -83,6 +83,7 @@ for filename in os.listdir(directory):
 def formattingForCompass(ownScore, teamAvg, teamnum):
     formattedStr = "Team members' perception of your contribution for Assignment 1: {:0.1f}% (averaged) \n".format(teamAvg) \
                    + "Your perception of your own contribution for Assignment 1: {}%".format(ownScore)
+
     if ownScore < teamAvg:
         formattedStr += "\nYou might be under-valuing the contribution that you are making to the team."
     elif teamAvg < ownScore:
