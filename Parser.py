@@ -1,6 +1,7 @@
 import csv
 import os
 import collections
+import math
 
 # directory is the path to a folder of peer evaluation txt files
 directory = '/Users/annabelleshih/Desktop/CS498PeerEvaluations/peerevaluationstxtfiles'
@@ -81,18 +82,21 @@ for filename in os.listdir(directory):
 
 
 def formattingForCompass(ownScore, teamAvg, teamnum):
+    teamAvg = math.ceil(teamAvg) if (math.ceil(teamAvg) - teamAvg > 0.5) else math.floor(teamAvg)
     formattedStr = "Team members' perception of your contribution for Assignment 1: {:0.1f}% (averaged) \n".format(teamAvg) \
                    + "Your perception of your own contribution for Assignment 1: {}%".format(ownScore)
 
-    if ownScore < teamAvg:
-        formattedStr += "\nYou might be under-valuing the contribution that you are making to the team."
+    if ownScore < round(teamAvg):
+        formattedStr += "\n\nYou might be under-valuing the contribution that you are making to the team."
     elif teamAvg < ownScore:
-        formattedStr += "\nYou might need to make additional contributions to the team in future assignments or " \
+        formattedStr += "\n\nYou might need to make additional contributions to the team in future assignments or " \
                         "you might need to better demonstrate or communicate the contributions that you are making " \
                         "to the assignments."
 
     if ownScore < (100 / int(teams[teamnum])) and teamAvg < (100 / int(teams[teamnum])):
         formattedStr += "\nYou probably need to make additional contributions to the team assignments in the future."
+
+    formattedStr += "\n\nThis is some auto-generated text to help you interpret the scores you have received.";
 
     return formattedStr
 
